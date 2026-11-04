@@ -3,6 +3,9 @@
 This repository pins drone image datasets for AIDroneMap tests. Images live only
 in release assets. Git holds the rebuild script, checksums and documentation.
 
+Two releases are pinned today: the CI image set and the golden input of the
+engine's golden comparison.
+
 ## Vineyard CI v1
 
 `aidm-vineyard-ci-v1.zip` contains 32 images from `aidm-vineyard-small v1`.
@@ -24,6 +27,27 @@ resizing, or change to EXIF or XMP metadata.
 
 `vineyard-ci-v1.sha256` records the SHA-256 of every selected image and the zip.
 Release assets are immutable. A different selection or archive gets a new tag.
+
+## Golden input v1
+
+`golden-input.zip` is the input of the golden comparison that the AIDM release
+workflow runs on every image (ADR 0004 in
+[AIDroneMap/aidm](https://github.com/AIDroneMap/aidm)). It is the project folder
+of an AIDM run of `aidm-vineyard-small v1` (73 images) up to and including
+`openmvs`, with what `odm_filterpoints` and the later stages read. The
+comparison starts the engine at `odm_filterpoints` on it and compares the later
+outputs by hash.
+
+- Release: <https://github.com/AIDroneMap/aidm-data/releases/tag/golden-vineyard-small-v1-332c211b>
+- Archive: `golden-input.zip`, 1,238,177,168 bytes
+- SHA-256: `001ab20d602466c1394e3b2bd752816c4ed5f6e754c172e798dbb8418a870fe5`
+- Engine commit: `332c211bfe8d3ea16c05435863623ebf426080d2`
+- Options: `--dsm --end-with openmvs`
+
+Unpack it into a folder named `project` and mount its parent at `/datasets`:
+the files name their paths under `/datasets/project`. `golden-input.manifest`
+in the release repeats these facts. A new golden input, from a new engine
+commit, gets a new tag.
 
 ## Source pin
 
